@@ -44,6 +44,7 @@ function App() {
   return (
     <main>
       <section>
+        <p>{agencyPool.length}</p>
         <p>{currentAgency.abbreviation}</p>
         <p>What does it stand for?</p>
       </section>
