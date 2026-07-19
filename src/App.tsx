@@ -12,6 +12,9 @@ function App() {
 
   const getNextAgency() => {
     const updatedAgencyPool = agencyPool.filter(agency => agency.abbreviation !== currentAgency.abbreviation);
+    
+    const nextIndex = Math.floor(Math.random() * agencyPool.length);
+    setCurrentAgency(updatedAgencyPool[nextIndex]);
   }
 
   const [answer, setAnswer] = useState("");
