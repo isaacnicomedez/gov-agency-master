@@ -10,6 +10,10 @@ function App() {
 
   const [agencyPool, setAgencyPool] = useState([...agencies]);
 
+  const getNextAgency() => {
+    const updatedAgencyPool = agencyPool.filter(agency => agency.abbreviation !== currentAgency.abbreviation);
+  }
+
   const [answer, setAnswer] = useState("");
 
   if (normalize(answer) === normalize(currentAgency.fullName)) {
