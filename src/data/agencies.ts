@@ -1,4 +1,6 @@
-export const agencies = [
+import type { Agency } from "../types/agencies";
+
+export const agencies: Agency[] = [
   {
     abbreviation: "DepEd",
     fullName: "Department of Education",
