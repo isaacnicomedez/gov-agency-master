@@ -11,7 +11,10 @@ function App() {
   });
 
   const [agencyPool, setAgencyPool] = useState<Agency[]>([...agencies]);
+
   const [answer, setAnswer] = useState<string>("");
+
+  const [score, setScore] = useState<number>(0);
 
   function getNextAgency(currentPool: Agency[]) {
     const updatedAgencyPool = currentPool.filter(
@@ -34,6 +37,7 @@ function App() {
 
     if (normalize(value) === normalize(currentAgency.fullName)) {
       getNextAgency(agencyPool);
+      setScore(prevScore => prevScore + 1);
     }
   }
 
@@ -44,7 +48,7 @@ function App() {
   return (
     <main>
       <section>
-        <p>{agencyPool.length}</p>
+        <p>Score: {score} Remaining: {agencyPool.length}</p>
         <p>{currentAgency.abbreviation}</p>
         <p>What does it stand for?</p>
       </section>
