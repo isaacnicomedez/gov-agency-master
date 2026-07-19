@@ -1,4 +1,4 @@
-export function normalize(text) {
+export function normalize(text: string): string {
     return text
         .trim()
         .replace(/\s+/g, "")
