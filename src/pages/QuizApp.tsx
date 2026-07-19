@@ -18,7 +18,7 @@ export default function QuizApp() {
     return (
         <>
             <main>
-                {renderGame(gameState, startGame, answer, setAnswer, checkAnswer)}
+                {renderGame({gameState, startGame, answer, setAnswer, checkAnswer})}
             </main>
         </>
     )

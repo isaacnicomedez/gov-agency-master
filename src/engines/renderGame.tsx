@@ -1,14 +1,14 @@
-import type { GameState } from "../types/game";
 import StartScreen from "../components/StartScreen";
 import QuestionCard from "../components/Questioncard";
-import type { Dispatch, SetStateAction } from "react";
+import type { RenderGameProps } from "../types/props";
 
-export function renderGame(
-        gameState: GameState, 
-        startGame: () => void, 
-        answer: string,
-        setAnswer: Dispatch<SetStateAction<string>>, 
-        checkAnswer: () => void) 
+export function renderGame({
+        gameState, 
+        startGame, 
+        answer,
+        setAnswer, 
+        checkAnswer,
+    }: RenderGameProps) 
     {
     switch(gameState) {
         case "start": 
