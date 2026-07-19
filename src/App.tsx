@@ -1,52 +1,58 @@
-import { useState } from "react"
+import { useState } from "react";
 import { agencies } from "./data/agencies";
 import { normalize } from "./utils/normalize";
+import type { Agency } from "./types/agencies";
+import type { ChangeEvent } from "react";
 
 function App() {
-  const [currentAgency, setCurrentAgency] = useState(() => {
+  const [currentAgency, setCurrentAgency] = useState<Agency>(() => {
     const initialIndex = Math.floor(Math.random() * agencies.length);
     return agencies[initialIndex];
   });
 
-  const [agencyPool, setAgencyPool] = useState([...agencies]);
+  const [agencyPool, setAgencyPool] = useState<Agency[]>([...agencies]);
+  const [answer, setAnswer] = useState<string>("");
 
-  const [answer, setAnswer] = useState("");
+  function getNextAgency(currentPool: Agency[]) {
+    const updatedAgencyPool = currentPool.filter(
+      (agency) => agency.abbreviation !== currentAgency.abbreviation
+    );
 
-  function getNextAgency() {
-    const updatedAgencyPool = agencyPool.filter(agency => agency.abbreviation !== currentAgency.abbreviation);
-    
-    const nextIndex = Math.floor(Math.random() * agencyPool.length);
+    if (updatedAgencyPool.length === 0) {
+      return;
+    }
+
+    const nextIndex = Math.floor(Math.random() * updatedAgencyPool.length);
     setCurrentAgency(updatedAgencyPool[nextIndex]);
+    setAgencyPool(updatedAgencyPool);
+    setAnswer("");
   }
 
-  function handleInputChange(e) {
+  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setAnswer(value);
 
-    if (normalize(answer) === normalize(currentAgency.fullName)) {
-      getNextAgency();
+    if (normalize(value) === normalize(currentAgency.fullName)) {
+      getNextAgency(agencyPool);
     }
   }
 
   return (
-    <>
-      <main>
-        <section>
-          <p>{currentAgency.abbreviation}</p>
-          <p>What does it stands for?</p>
-        </section>
-        <section>
-          <input 
-            type="text" 
-            placeholder="Type full name here..." 
-
-            value={answer}
-            onChange={handleInputChange}
-          />
-        </section>
-      </main>
-    </>
-  )
+    <main>
+      <section>
+        <p>{currentAgency.abbreviation}</p>
+        <p>What does it stand for?</p>
+      </section>
+      <section>
+        <input
+          type="text"
+          placeholder="Type full name here..."
+          value={answer}
+          onChange={handleInputChange}
+        />
+      </section>
+    </main>
+  );
 }
 
-export default App
+export default App;
