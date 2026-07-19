@@ -7,6 +7,8 @@ function App() {
     return agencies[initialIndex];
   });
 
+  const [answer, setAnswer] = useState("");
+
   return (
     <>
       <main>
@@ -15,7 +17,10 @@ function App() {
           <p>What does it stands for?</p>
         </section>
         <section>
-          <input type="text" placeholder="Type full name here..." />
+          <input 
+            type="text" 
+            placeholder="Type full name here..." 
+          />
         </section>
       </main>
     </>
