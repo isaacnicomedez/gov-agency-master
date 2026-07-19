@@ -7,6 +7,8 @@ function App() {
     return agencies[initialIndex];
   });
 
+  const [agencyPool, setAgencyPool] = useState([...agencies]);
+
   const [answer, setAnswer] = useState("");
 
   return (
