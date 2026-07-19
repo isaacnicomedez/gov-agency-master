@@ -20,6 +20,9 @@ function App() {
           <input 
             type="text" 
             placeholder="Type full name here..." 
+
+            value={answer}
+            onChange={e => setAnswer(e.target.value)}
           />
         </section>
       </main>
