@@ -10,17 +10,22 @@ function App() {
 
   const [agencyPool, setAgencyPool] = useState([...agencies]);
 
-  const getNextAgency() => {
+  const [answer, setAnswer] = useState("");
+
+  function getNextAgency() {
     const updatedAgencyPool = agencyPool.filter(agency => agency.abbreviation !== currentAgency.abbreviation);
     
     const nextIndex = Math.floor(Math.random() * agencyPool.length);
     setCurrentAgency(updatedAgencyPool[nextIndex]);
   }
 
-  const [answer, setAnswer] = useState("");
+  function handleInputChange(e) {
+    const value = e.target.value;
+    setAnswer(value);
 
-  if (normalize(answer) === normalize(currentAgency.fullName)) {
-    console.log("correct!");
+    if (normalize(answer) === normalize(currentAgency.fullName)) {
+      getNextAgency();
+    }
   }
 
   return (
@@ -36,7 +41,7 @@ function App() {
             placeholder="Type full name here..." 
 
             value={answer}
-            onChange={e => setAnswer(e.target.value)}
+            onChange={handleInputChange}
           />
         </section>
       </main>
