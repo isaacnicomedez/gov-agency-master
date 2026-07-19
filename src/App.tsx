@@ -2,7 +2,7 @@ import { useState } from "react";
 import { agencies } from "./data/agencies";
 import { normalize } from "./utils/normalize";
 import type { Agency } from "./types/agencies";
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
 
 function App() {
   const [currentAgency, setCurrentAgency] = useState<Agency>(() => {
@@ -37,6 +37,10 @@ function App() {
     }
   }
 
+  function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") getNextAgency(agencyPool);
+  }
+
   return (
     <main>
       <section>
@@ -49,6 +53,7 @@ function App() {
           placeholder="Type full name here..."
           value={answer}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
         />
       </section>
     </main>
