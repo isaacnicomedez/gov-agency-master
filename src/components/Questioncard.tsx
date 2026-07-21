@@ -6,10 +6,9 @@ export default function QuestionCard({
     setAnswer, 
     checkAnswer,
     }: QuestionCardProps) {
-
-    console.log(answer)
     return (
         <>
+            <p>{}</p>
             <input 
                 type="text" 
                 value={answer}
