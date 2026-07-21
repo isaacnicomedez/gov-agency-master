@@ -9,16 +9,22 @@ export interface RenderGameProps {
     answer: string;
     setAnswer: Dispatch<SetStateAction<string>>;
     checkAnswer: () => void;
-    currentAgency: Agency;
+    currentAgency: Agency | null;
 }
 
 export interface QuestionCardProps {
     answer: string;
-    setAnswer: Dispatch<SetStateAction<string>>;
-    checkAnswer: () => void;
+    currentAgency: Agency;
+    onAnswerChange: Dispatch<SetStateAction<string>>;
+    onSubmit: () => void;
 }
 
 export interface handleKeyDownProps {
     e: KeyboardEvent<HTMLInputElement>;
-    checkAnswer: () => void;
+    onSubmit: () => void;
+}
+
+export interface CardProps {
+    currentAgency: Agency;
+    isCorrect: "correct" | "wrong";
 }
