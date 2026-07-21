@@ -1,11 +1,13 @@
 import { useState } from "react";
 
 import type { GameState } from "../types/game"
-import { renderGame } from "../engines/renderGame";
+import QuestionCard from "../components/QuestionCard";
 import { agencies } from "../data/agencies";
 import type { Agency } from "../types/agencies";
 import { shuffle } from "../utils/shuffle";
 import { normalize } from "../utils/normalize";
+import StartScreen from "../components/StartScreen";
+import ResultCard from "../components/ResultCard";
 
 export default function QuizApp() {
     const [gameState, setGameState] = useState<GameState>("start");
@@ -19,6 +21,8 @@ export default function QuizApp() {
 
         setCurrentAgency(nextAgency)
         setAgencyPool(remaining)
+
+        setAnswer("");
     }
 
     function startGame() {
@@ -31,18 +35,33 @@ export default function QuizApp() {
 
         const isCorrect = normalize(answer) === normalize(currentAgency.fullName);
         setGameState(isCorrect ? "correct" : "wrong");
-        setAnswer("");
 
         setTimeout(() => {
             nextQuestion();
             setGameState("playing")
-        }, 800);
+        }, 2000);
     }
+
+    console.log(agencyPool.length);
 
     return (
         <>
             <main>
-                {renderGame({gameState, startGame, answer, setAnswer, checkAnswer, currentAgency})}
+                {gameState === "start" && (
+                    <StartScreen onStart={startGame}/>
+                )}
+
+                {(gameState === "correct" ||
+                  gameState === "wrong") &&
+                  currentAgency && (
+                    <ResultCard currentAgency={currentAgency} isCorrect={gameState} />
+                  )
+                }
+
+                {gameState === "playing" &&
+                  currentAgency && (
+                    <QuestionCard answer={answer} currentAgency={currentAgency} onAnswerChange={setAnswer} onSubmit={checkAnswer} />
+                )}
             </main>
         </>
     )
