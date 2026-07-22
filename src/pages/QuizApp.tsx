@@ -9,7 +9,9 @@ import { normalize } from "../utils/normalize";
 
 import StartScreen from "../components/StartScreen";
 import QuestionCard from "../components/QuestionCard";
-import ResultCard from "../components/ResultCard";
+import ResultCard from "../components/FinalResultCard";
+import ScoreBoard from "../components/ScoreBoard";
+import FeedbackCard from "../components/FeedbackCard";
 
 export default function QuizApp() {
     const [gameState, setGameState] = useState<GameState>("start");
@@ -17,6 +19,9 @@ export default function QuizApp() {
 
     const [agencyPool, setAgencyPool] = useState<Agency[]>(() => shuffle([...agencies]));
     const [currentAgency, setCurrentAgency] = useState<Agency | null>(null);
+
+    const [score, setScore] = useState<number>(0);
+    const [wrong, setWrong] = useState<number>(0);
 
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
@@ -26,6 +31,12 @@ export default function QuizApp() {
     }, [gameState]);
 
     function nextQuestion() {
+        if (agencyPool.length === 0) {
+            setCurrentAgency(null);
+            setGameState("finished");
+            return;
+        }
+
         const [nextAgency, ...remaining] = agencyPool;
 
         setCurrentAgency(nextAgency)
@@ -44,15 +55,21 @@ export default function QuizApp() {
         if (!currentAgency) return;
 
         const isCorrect = normalize(answer) === normalize(currentAgency.fullName);
+
+        if (isCorrect) {
+            setScore(prev => prev + 1);
+        } else {
+            setWrong(prev => prev + 1);
+        }
+
         setGameState(isCorrect ? "correct" : "wrong");
 
         setTimeout(() => {
             nextQuestion();
             setGameState("playing")
         }, 2000);
-    }
 
-    console.log(agencyPool.length);
+    }
 
     return (
         <>
@@ -61,17 +78,26 @@ export default function QuizApp() {
                     <StartScreen onStart={startGame}/>
                 )}
 
-                {(gameState === "correct" ||
-                  gameState === "wrong") &&
-                  currentAgency && (
-                    <ResultCard currentAgency={currentAgency} isCorrect={gameState} />
-                  )
-                }
+                {(gameState !== "start" &&
+                 gameState !== "finished") && (
+                    <ScoreBoard score={score} agencyPool={agencyPool}/>
+                )}
 
                 {gameState === "playing" &&
                   currentAgency && (
                     <QuestionCard answer={answer} currentAgency={currentAgency} inputRef={inputRef} onAnswerChange={setAnswer} onSubmit={checkAnswer} />
                 )}
+
+                {(gameState === "correct" ||
+                  gameState === "wrong") &&
+                  currentAgency && (
+                    <FeedbackCard currentAgency={currentAgency} isCorrect={gameState} />
+                  )
+                }
+
+                {gameState === "finished" &&
+                    <ResultCard score={score} wrong={wrong} />
+                }
             </main>
         </>
     )
