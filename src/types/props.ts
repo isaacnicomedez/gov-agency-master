@@ -25,7 +25,17 @@ export interface handleKeyDownProps {
     onSubmit: () => void;
 }
 
-export interface CardProps {
+export interface FeedbackCardProps {
     currentAgency: Agency;
     isCorrect: "correct" | "wrong";
+}
+
+export interface ScoreBoardProps {  
+    score: number;
+    agencyPool: Agency[];
+}
+
+export interface FinalResultProps {
+    score: number;
+    wrong: number;
 }
