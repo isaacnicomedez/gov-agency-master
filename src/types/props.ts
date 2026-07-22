@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, RefObject, SetStateAction } from "react";
 import type { KeyboardEvent } from "react";
 import type { GameState } from "./game";
 import type { Agency } from "./agencies";
@@ -15,6 +15,7 @@ export interface RenderGameProps {
 export interface QuestionCardProps {
     answer: string;
     currentAgency: Agency;
+    inputRef: RefObject<HTMLInputElement | null>;
     onAnswerChange: Dispatch<SetStateAction<string>>;
     onSubmit: () => void;
 }

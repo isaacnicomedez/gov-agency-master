@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
-import type { GameState } from "../types/game"
-import QuestionCard from "../components/QuestionCard";
-import { agencies } from "../data/agencies";
 import type { Agency } from "../types/agencies";
+import type { GameState } from "../types/game"
+
+import { agencies } from "../data/agencies";
 import { shuffle } from "../utils/shuffle";
 import { normalize } from "../utils/normalize";
+
 import StartScreen from "../components/StartScreen";
+import QuestionCard from "../components/QuestionCard";
 import ResultCard from "../components/ResultCard";
 
 export default function QuizApp() {
@@ -16,6 +18,13 @@ export default function QuizApp() {
     const [agencyPool, setAgencyPool] = useState<Agency[]>(() => shuffle([...agencies]));
     const [currentAgency, setCurrentAgency] = useState<Agency | null>(null);
 
+    const inputRef = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+        if (gameState === "playing") {
+            inputRef.current?.focus();
+        }
+    }, [gameState]);
+
     function nextQuestion() {
         const [nextAgency, ...remaining] = agencyPool;
 
@@ -23,6 +32,7 @@ export default function QuizApp() {
         setAgencyPool(remaining)
 
         setAnswer("");
+        inputRef.current?.focus();
     }
 
     function startGame() {
@@ -60,7 +70,7 @@ export default function QuizApp() {
 
                 {gameState === "playing" &&
                   currentAgency && (
-                    <QuestionCard answer={answer} currentAgency={currentAgency} onAnswerChange={setAnswer} onSubmit={checkAnswer} />
+                    <QuestionCard answer={answer} currentAgency={currentAgency} inputRef={inputRef} onAnswerChange={setAnswer} onSubmit={checkAnswer} />
                 )}
             </main>
         </>
