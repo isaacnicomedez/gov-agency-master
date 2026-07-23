@@ -125,7 +125,7 @@ export default function QuizApp() {
                 }
 
                 {gameState === "finished" &&
-                    <ResultCard score={stats.score}/>
+                    <ResultCard stats={stats}/>
                 }
             </main>
         </>

@@ -1,6 +1,6 @@
 import type { Dispatch, RefObject, SetStateAction } from "react";
 import type { KeyboardEvent } from "react";
-import type { GameState } from "./game";
+import type { GameState, Stats } from "./game";
 import type { Agency } from "./agencies";
 
 export interface RenderGameProps {
@@ -36,5 +36,5 @@ export interface ScoreBoardProps {
 }
 
 export interface FinalResultProps {
-    score: number;
+    stats: Stats;
 }
