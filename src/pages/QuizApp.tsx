@@ -43,7 +43,7 @@ export default function QuizApp() {
         const saved = localStorage.getItem("record");
         return saved
             ? JSON.parse(saved)
-            : { time: null, score: 0, accuracy: 0,};
+            : { time: null, score: 0, accuracy: 0, correctAnswers: 0,};
     })
 
     const total = stats.correct.easy + stats.correct.medium + stats.correct.hard;
@@ -51,10 +51,6 @@ export default function QuizApp() {
 
     const elapsedMs = stats.finishedAt - stats.startedAt;
     const totalSeconds = Math.floor(elapsedMs / 1000);
-    const time = {
-        minutes: Math.floor(totalSeconds / 60),
-        seconds: totalSeconds % 60,
-    }
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -128,6 +124,7 @@ export default function QuizApp() {
             time: totalSeconds,
             score: stats.score,
             accuracy,
+            correctAnswers: total,
         }
 
         const saved = localStorage.getItem("record");
@@ -155,7 +152,7 @@ export default function QuizApp() {
         })
         
         return () => clearTimeout(timeout);
-    }, [gameState, totalSeconds, stats.score]);
+    }, [gameState, totalSeconds, stats.score, accuracy, total]);
 
     useEffect(() => {
         if (gameState === "playing") {
@@ -188,7 +185,7 @@ export default function QuizApp() {
                 }
 
                 {gameState === "finished" &&
-                    <ResultCard stats={stats} total={total} accuracy={accuracy} time={time} record={bestRecord}/>
+                    <ResultCard stats={stats} total={total} accuracy={accuracy} time={totalSeconds} record={bestRecord}/>
                 }
             </main>
         </>
