@@ -14,6 +14,11 @@ export interface Stats {
         hard: number;
     }
 
-    startedAt: number,
-    finishedAt: number,
+    startedAt: number;
+    finishedAt: number;
+}
+
+export interface Time {
+    minutes: number;
+    seconds: number;
 }

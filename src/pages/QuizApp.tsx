@@ -42,6 +42,13 @@ export default function QuizApp() {
     const total = stats.correct.easy + stats.correct.medium + stats.correct.hard;
     const accuracy = total / agencies.length * 100;
 
+    const elapsedMs = stats.finishedAt - stats.startedAt;
+    const totalSeconds = Math.floor(elapsedMs / 1000);
+    const time = {
+        minutes: Math.floor(totalSeconds / 60),
+        seconds: totalSeconds % 60,
+    } 
+
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
         if (gameState === "playing") {
@@ -128,7 +135,7 @@ export default function QuizApp() {
                 }
 
                 {gameState === "finished" &&
-                    <ResultCard stats={stats} total={total} accuracy={accuracy}/>
+                    <ResultCard stats={stats} total={total} accuracy={accuracy} time={time}/>
                 }
             </main>
         </>

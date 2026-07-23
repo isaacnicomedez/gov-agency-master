@@ -1,6 +1,6 @@
 import type { FinalResultProps} from "../types/props";
 
-export default function ResultCard({stats, total, accuracy}: FinalResultProps) {
+export default function ResultCard({stats, total, accuracy, time}: FinalResultProps) {
     return (
         <section>
             <h2>Results:</h2>
@@ -10,6 +10,8 @@ export default function ResultCard({stats, total, accuracy}: FinalResultProps) {
 
             <p>Total: {total}</p>
             <p>Accuracy: {accuracy}%</p>
+
+            <p>Time: {time.minutes > 0 && `${time.minutes}m`} {time.seconds}s</p>
 
             <p>Score: {stats.score}</p>
         </section>
