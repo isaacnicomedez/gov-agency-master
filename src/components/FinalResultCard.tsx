@@ -1,21 +1,21 @@
+import { agencies } from "../data/agencies";
 import type { FinalResultProps} from "../types/props";
+import { formatTime } from "../utils/format-time";
 
 export default function ResultCard({stats, total, accuracy, time, record}: FinalResultProps) {
     return (
         <section>
-            <h2>Results:</h2>
-            <p>Easy: {stats.correct.easy}</p>
-            <p>Medium: {stats.correct.medium}</p>
-            <p>Hard: {stats.correct.hard}</p>
+            <h2>Best:</h2>
+            <p>Score: {record.score}</p>
+            <p>Accuracy: {record.accuracy}</p>
+            <p>Time: {formatTime(record.time)}</p>
+            <p>Correct Answers: {record.correctAnswers} / {agencies.length}</p>
 
-            <p>Total: {total}</p>
-            <p>Accuracy: {accuracy.toFixed(2)}%</p>
-
-            <p>Fastest Record: {record.time}</p>
-            <p>Time: {time.minutes > 0 && `${time.minutes}m`} {time.seconds}s</p>
-
+            <h2>Current:</h2>
             <p>Score: {stats.score}</p>
-            <p>High Score: {record.score}</p>
+            <p>Accuracy: {accuracy}</p>
+            <p>Time: {formatTime(time)}</p>
+            <p>Correct Answers: {total} / {agencies.length}</p>
         </section>
     )
 }
