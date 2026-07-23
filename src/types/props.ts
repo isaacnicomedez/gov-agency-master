@@ -37,5 +37,4 @@ export interface ScoreBoardProps {
 
 export interface FinalResultProps {
     score: number;
-    wrong: number;
 }

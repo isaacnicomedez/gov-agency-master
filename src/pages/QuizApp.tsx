@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 
 import type { Agency } from "../types/agencies";
-import type { Stats, type GameState } from "../types/game"
+import type { Stats, GameState } from "../types/game"
 
 import { agencies } from "../data/agencies";
 import { shuffle } from "../utils/shuffle";
@@ -51,6 +51,12 @@ export default function QuizApp() {
 
         if (!nextAgency) {
             setCurrentAgency(null);
+
+            setStats(prev => ({
+                ...prev,
+                finishedAt: Date.now(),
+            }));
+
             setGameState("finished");
             return;
         }
@@ -62,6 +68,10 @@ export default function QuizApp() {
     }
 
     function startGame() {
+        setStats(prev => ({
+            ...prev,
+            startedAt: Date.now(),
+        }));
         nextQuestion();
     }
 
@@ -80,8 +90,6 @@ export default function QuizApp() {
                     [difficulty]: prev.correct[difficulty] + 1,
                 }
             }));
-        } else {
-            setStats(prev => prev + 1);
         }
 
         setGameState(isCorrect ? "correct" : "wrong");
@@ -101,7 +109,7 @@ export default function QuizApp() {
 
                 {(gameState !== "start" &&
                  gameState !== "finished") && (
-                    <ScoreBoard score={score} agencyPool={agencyPool}/>
+                    <ScoreBoard score={stats.score} agencyPool={agencyPool}/>
                 )}
 
                 {gameState === "playing" &&
@@ -117,7 +125,7 @@ export default function QuizApp() {
                 }
 
                 {gameState === "finished" &&
-                    <ResultCard score={score} wrong={wrong} />
+                    <ResultCard score={stats.score}/>
                 }
             </main>
         </>
