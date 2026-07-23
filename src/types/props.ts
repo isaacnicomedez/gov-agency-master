@@ -37,4 +37,6 @@ export interface ScoreBoardProps {
 
 export interface FinalResultProps {
     stats: Stats;
+    total: number;
+    accuracy: number;
 }
