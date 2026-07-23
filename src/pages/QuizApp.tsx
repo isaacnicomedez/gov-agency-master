@@ -31,24 +31,22 @@ export default function QuizApp() {
     }, [gameState]);
 
     function nextQuestion() {
-        if (agencyPool.length === 0) {
+        const [nextAgency, ...remaining] = agencyPool;
+
+        if (!nextAgency) {
             setCurrentAgency(null);
             setGameState("finished");
             return;
         }
 
-        const [nextAgency, ...remaining] = agencyPool;
-
         setCurrentAgency(nextAgency)
         setAgencyPool(remaining)
-
         setAnswer("");
-        inputRef.current?.focus();
+        setGameState("playing");
     }
 
     function startGame() {
         nextQuestion();
-        setGameState("playing");
     }
 
     function checkAnswer() {
@@ -66,7 +64,6 @@ export default function QuizApp() {
 
         setTimeout(() => {
             nextQuestion();
-            setGameState("playing")
         }, 2000);
 
     }
