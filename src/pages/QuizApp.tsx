@@ -43,7 +43,7 @@ export default function QuizApp() {
         const saved = localStorage.getItem("record");
         return saved
             ? JSON.parse(saved)
-            : { time: null, score: 0};
+            : { time: null, score: 0, accuracy: 0,};
     })
 
     const total = stats.correct.easy + stats.correct.medium + stats.correct.hard;
@@ -127,6 +127,7 @@ export default function QuizApp() {
         const currentRecord: Record = {
             time: totalSeconds,
             score: stats.score,
+            accuracy,
         }
 
         const saved = localStorage.getItem("record");
@@ -134,12 +135,18 @@ export default function QuizApp() {
 
         if (saved) {
             const best = JSON.parse(saved) as Record;
-            newBest = {
-                time: best.time === null
-                    ? currentRecord.time
-                    : Math.min(best.time, currentRecord.time),
-                score: Math.max(best.score, currentRecord.score),
-            };
+            
+            if (currentRecord.score > best.score) {
+                newBest = currentRecord;
+            } else if (
+                currentRecord.score === best.score &&
+                currentRecord.time !== null &&
+                (best.time === null || currentRecord.time < best.time)
+            ) {
+                newBest = currentRecord;
+            } else {
+                newBest = best;
+            }
         }
 
         localStorage.setItem("record", JSON.stringify(newBest));
