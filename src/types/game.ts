@@ -26,5 +26,5 @@ export interface Time {
 export interface Record {
     time: number | null;
     score: number;
-    acuuracy: number;
+    accuracy: number;
 }
