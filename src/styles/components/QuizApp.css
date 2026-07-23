@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+    background: #eceff3;
+}
+
+.main-game {
+    width: min(95%, 1000px);
+    min-height: 90vh;
+
+    margin: 2rem auto;
+
+    background: white;
+
+    border-radius: 24px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+
+    overflow: hidden;
+}

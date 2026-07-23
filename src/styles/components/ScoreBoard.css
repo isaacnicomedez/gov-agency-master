@@ -1,0 +1,48 @@
+.header-container {
+    width: min(90%, 900px);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 1.5rem auto;
+
+    padding: 1rem 2rem;
+
+    background: white;
+
+    border-radius: 1rem;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Score */
+.header-container h2 {
+    margin: 0;
+
+    font-size: 1.5rem;
+
+    color: #222;
+}
+
+
+/* Remaining */
+.header-container p {
+    margin: 0;
+
+    font-size: 1rem;
+
+    color: #555;
+}
+
+
+@media (max-width: 600px) {
+    .header-container {
+        flex-direction: column;
+        gap: 0.5rem;
+
+        text-align: center;
+    }
+}

@@ -1,0 +1,144 @@
+.question-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: min(90%, 600px);
+    min-height: 320px;
+
+    background: white;
+    border-radius: 24px;
+    padding: 3rem 2.5rem;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.12);
+
+    gap: 1.2rem;
+
+    animation: fadeIn 0.3s ease;
+}
+
+
+/* Difficulty badge */
+.difficulty {
+    margin: 0;
+
+    padding: 0.35rem 1rem;
+
+    background: #e8f0ff;
+    color: #0056b3;
+
+    border-radius: 999px;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    text-transform: capitalize;
+}
+
+.difficulty.easy {
+    background: #e8f7e8;
+    color: #2e7d32;
+}
+
+.difficulty.medium {
+    background: #fff4db;
+    color: #d97706;
+}
+
+.difficulty.hard {
+    background: #ffe5e5;
+    color: #c62828;
+}
+
+
+
+/* Agency abbreviation */
+.agency-name {
+    margin: 0;
+
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    color: #222;
+}
+
+
+/* Question text */
+.question {
+    margin: 0;
+
+    font-size: 1.2rem;
+    color: #555;
+
+    text-align: center;
+}
+
+
+/* Input */
+.question-card input {
+    width: 85%;
+
+    margin-top: 1rem;
+
+    padding: 14px 18px;
+
+    font-size: 1rem;
+
+    border: 2px solid #ddd;
+    border-radius: 12px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.question-card input:hover {
+    border-color: #aaa;
+}
+
+
+.question-card input:focus {
+    outline: none;
+
+    border-color: #0056b3;
+
+    box-shadow:
+        0 0 0 4px rgba(0, 86, 179, 0.15);
+
+    transform: translateY(-2px);
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .question-card {
+        width: 85%;
+        padding: 2rem 1.5rem;
+    }
+
+    .question {
+        font-size: 1rem;
+    }
+
+    .question-card input {
+        width: 100%;
+    }
+}

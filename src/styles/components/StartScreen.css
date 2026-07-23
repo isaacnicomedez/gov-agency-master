@@ -1,21 +1,74 @@
 .main-container {
-    height: 100vh;
-    width: 80%;
-    margin: auto;
+    min-height: 100vh;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
+    padding: 2rem;
+
+    background: whitesmoke;
+}
+
+.start-card {
+    width: min(90%, 550px);
+
+    background: white;
+
+    padding: 3rem;
+
+    border-radius: 24px;
+
+    text-align: center;
+
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.start-card h1 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+
+    font-size: 2.25rem;
+
+    color: #222;
+}
+
+.start-card p {
+    margin-bottom: 2rem;
+
+    color: #666;
+
+    line-height: 1.6;
 }
 
 .start-btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    background: transparent;
-    border-radius: 16px;
+    padding: 0.9rem 2.8rem;
+
+    border: none;
+    border-radius: 999px;
+
+    background: #0056b3;
+    color: white;
+
+    font-size: 1.1rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .start-btn:hover {
-    background-color: black;
-    color: gold;
-    transition: 0.2s;
+    background: #003f85;
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 8px 20px rgba(0, 86, 179, 0.3);
+}
+
+.start-btn:active {
+    transform: translateY(0);
 }
