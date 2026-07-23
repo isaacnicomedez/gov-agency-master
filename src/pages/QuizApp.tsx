@@ -23,7 +23,7 @@ export default function QuizApp() {
     const [gameState, setGameState] = useState<GameState>("start");
     const [answer, setAnswer] = useState<string>("");
 
-    const [agencyPool, setAgencyPool] = useState<Agency[]>(() => shuffle([...agencies]));
+    const [agencyPool, setAgencyPool] = useState<Agency[]>([]);
     const [currentAgency, setCurrentAgency] = useState<Agency | null>(null);
 
     const [stats, setStats] = useState<Stats>({
@@ -40,7 +40,7 @@ export default function QuizApp() {
     });
 
     const total = stats.correct.easy + stats.correct.medium + stats.correct.hard;
-    const accuracy = total / agencies.length * 100;
+    const accuracy = (total / agencies.length) * 100;
 
     const elapsedMs = stats.finishedAt - stats.startedAt;
     const totalSeconds = Math.floor(elapsedMs / 1000);
@@ -56,8 +56,34 @@ export default function QuizApp() {
         }
     }, [gameState]);
 
-    function nextQuestion() {
-        const [nextAgency, ...remaining] = agencyPool;
+    useEffect(() => {
+        if (gameState !== "finished") return;
+
+        const record = {
+            time: totalSeconds,
+            score: stats.score,
+        }
+
+        const saved = localStorage.getItem("record");
+        if (!saved) {
+            localStorage.setItem("record", JSON.stringify(record));
+            return;
+        }
+
+        const parsed = JSON.parse(saved);
+        if (record.time < parsed.time) {
+            parsed.time = record.time;
+        }
+        if (record.score > parsed.score) {
+            parsed.score = record.score;
+        }
+
+        localStorage.setItem("record", JSON.stringify(parsed));
+
+    }, [gameState]);
+
+    function nextQuestion(pool = agencyPool) {
+        const [nextAgency, ...remaining] = pool;
 
         if (!nextAgency) {
             setCurrentAgency(null);
@@ -78,11 +104,20 @@ export default function QuizApp() {
     }
 
     function startGame() {
-        setStats(prev => ({
-            ...prev,
+        const shuffled = shuffle([...agencies]);
+        setAgencyPool(shuffled);
+
+        setStats({
+            score: 0,
+            correct: {
+                easy: 0,
+                medium: 0,
+                hard: 0,
+            },
             startedAt: Date.now(),
-        }));
-        nextQuestion();
+            finishedAt: 0,
+        });
+        nextQuestion(shuffled);
     }
 
     function checkAnswer() {
