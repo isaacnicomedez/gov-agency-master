@@ -1,10 +1,9 @@
 import type { FinalResultProps} from "../types/props";
 
-export default function ResultCard({score, wrong}: FinalResultProps) {
+export default function ResultCard({stats, total, accuracy}: FinalResultProps) {
     return (
         <section>
-            <h2>Correct Answers: {score}</h2>
-            <p>Wrong Answers: {wrong}</p>
+            
         </section>
     )
 }

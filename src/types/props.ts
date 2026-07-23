@@ -33,7 +33,7 @@ export interface FeedbackCardProps {
 export interface ScoreBoardProps {  
     score: number;
     agencyPool: Agency[];
-}
+}   
 
 export interface FinalResultProps {
     stats: Stats;
