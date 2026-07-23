@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 
 import type { Agency } from "../types/agencies";
-import type { GameState } from "../types/game"
+import type { Stats, type GameState } from "../types/game"
 
 import { agencies } from "../data/agencies";
 import { shuffle } from "../utils/shuffle";
@@ -14,14 +14,30 @@ import ScoreBoard from "../components/ScoreBoard";
 import FeedbackCard from "../components/FeedbackCard";
 
 export default function QuizApp() {
+    const POINTS = {
+        easy: 10,
+        medium: 20,
+        hard: 30
+    } as const;
+
     const [gameState, setGameState] = useState<GameState>("start");
     const [answer, setAnswer] = useState<string>("");
 
     const [agencyPool, setAgencyPool] = useState<Agency[]>(() => shuffle([...agencies]));
     const [currentAgency, setCurrentAgency] = useState<Agency | null>(null);
 
-    const [score, setScore] = useState<number>(0);
-    const [wrong, setWrong] = useState<number>(0);
+    const [stats, setStats] = useState<Stats>({
+        score: 0,
+
+        correct: {
+            easy: 0,
+            medium: 0,
+            hard: 0,
+        },
+
+        startedAt: 0,
+        finishedAt: 0,
+    });
 
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
@@ -53,11 +69,19 @@ export default function QuizApp() {
         if (!currentAgency) return;
 
         const isCorrect = normalize(answer) === normalize(currentAgency.fullName);
+        const difficulty = currentAgency.difficulty;
 
         if (isCorrect) {
-            setScore(prev => prev + 1);
+            setStats(prev => ({
+                ...prev,
+                score: prev.score + POINTS[difficulty],
+                correct: {
+                    ...prev.correct,
+                    [difficulty]: prev.correct[difficulty] + 1,
+                }
+            }));
         } else {
-            setWrong(prev => prev + 1);
+            setStats(prev => prev + 1);
         }
 
         setGameState(isCorrect ? "correct" : "wrong");
