@@ -7,13 +7,13 @@ export default function ResultCard({stats, total, accuracy, time, record}: Final
         <section>
             <h2>Best:</h2>
             <p>Score: {record.score}</p>
-            <p>Accuracy: {record.accuracy}</p>
+            <p>Accuracy: {record.accuracy.toFixed(2)}</p>
             <p>Time: {formatTime(record.time)}</p>
             <p>Correct Answers: {record.correctAnswers} / {agencies.length}</p>
 
             <h2>Current:</h2>
             <p>Score: {stats.score}</p>
-            <p>Accuracy: {accuracy}</p>
+            <p>Accuracy: {accuracy.toFixed(2)}</p>
             <p>Time: {formatTime(time)}</p>
             <p>Correct Answers: {total} / {agencies.length}</p>
         </section>
