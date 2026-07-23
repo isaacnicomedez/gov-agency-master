@@ -22,3 +22,8 @@ export interface Time {
     minutes: number;
     seconds: number;
 }
+
+export interface Record {
+    time: number,
+    score: number,
+}
