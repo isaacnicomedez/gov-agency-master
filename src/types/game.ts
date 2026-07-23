@@ -18,13 +18,9 @@ export interface Stats {
     finishedAt: number;
 }
 
-export interface Time {
-    minutes: number;
-    seconds: number;
-}
-
 export interface Record {
     time: number | null;
     score: number;
     accuracy: number;
+    correctAnswers: number;
 }
