@@ -13,6 +13,8 @@ import ResultCard from "../components/FinalResultCard";
 import ScoreBoard from "../components/ScoreBoard";
 import FeedbackCard from "../components/FeedbackCard";
 
+import "../styles/components/QuizApp.css";
+
 export default function QuizApp() {
     const POINTS = {
         easy: 10,
@@ -43,7 +45,7 @@ export default function QuizApp() {
         const saved = localStorage.getItem("record");
         return saved
             ? JSON.parse(saved)
-            : { time: null, score: 0, accuracy: 0, correctAnswers: 0,};
+            : { time: null, score: 0, accuracy: 0, correctAnswers: 0, };
     })
 
     const total = stats.correct.easy + stats.correct.medium + stats.correct.hard;
@@ -132,7 +134,7 @@ export default function QuizApp() {
 
         if (saved) {
             const best = JSON.parse(saved) as Record;
-            
+
             if (currentRecord.score > best.score) {
                 newBest = currentRecord;
             } else if (
@@ -148,9 +150,9 @@ export default function QuizApp() {
 
         localStorage.setItem("record", JSON.stringify(newBest));
         const timeout = setTimeout(() => {
-            setBestRecord(newBest);    
+            setBestRecord(newBest);
         })
-        
+
         return () => clearTimeout(timeout);
     }, [gameState, totalSeconds, stats.score, accuracy, total]);
 
@@ -162,31 +164,34 @@ export default function QuizApp() {
 
     return (
         <>
-            <main>
+            <main className="main-game">
                 {gameState === "start" && (
-                    <StartScreen onStart={startGame}/>
+                    <StartScreen onStart={startGame} />
                 )}
 
                 {(gameState !== "start" &&
-                 gameState !== "finished") && (
-                    <ScoreBoard score={stats.score} agencyPool={agencyPool}/>
-                )}
+                    gameState !== "finished") && (
+                        <ScoreBoard score={stats.score} agencyPool={agencyPool} />
+                    )}
 
                 {gameState === "playing" &&
-                  currentAgency && (
-                    <QuestionCard answer={answer} currentAgency={currentAgency} inputRef={inputRef} onAnswerChange={setAnswer} onSubmit={checkAnswer} />
-                )}
+                    currentAgency && (
+                        <QuestionCard answer={answer} currentAgency={currentAgency} inputRef={inputRef} onAnswerChange={setAnswer} onSubmit={checkAnswer} />
+                    )}
 
                 {(gameState === "correct" ||
-                  gameState === "wrong") &&
-                  currentAgency && (
-                    <FeedbackCard currentAgency={currentAgency} isCorrect={gameState} />
-                  )
+                    gameState === "wrong") &&
+                    currentAgency && (
+                        <FeedbackCard currentAgency={currentAgency} isCorrect={gameState} />
+                    )
                 }
 
-                {gameState === "finished" &&
-                    <ResultCard stats={stats} total={total} accuracy={accuracy} time={totalSeconds} record={bestRecord}/>
-                }
+
+                {gameState === "finished" && (
+                    <div className="result-screen">
+                        <ResultCard stats={stats} total={total} accuracy={accuracy} time={totalSeconds} record={bestRecord} />
+                    </div>
+                )}
             </main>
         </>
     )
