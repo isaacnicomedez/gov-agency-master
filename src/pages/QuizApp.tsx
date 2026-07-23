@@ -39,6 +39,13 @@ export default function QuizApp() {
         finishedAt: 0,
     });
 
+    const [bestRecord, setBestRecord] = useState<Record>(() => {
+        const saved = localStorage.getItem("record");
+        return saved
+            ? JSON.parse(saved)
+            : { time: null, score: 0};
+    })
+
     const total = stats.correct.easy + stats.correct.medium + stats.correct.hard;
     const accuracy = (total / agencies.length) * 100;
 
@@ -48,8 +55,6 @@ export default function QuizApp() {
         minutes: Math.floor(totalSeconds / 60),
         seconds: totalSeconds % 60,
     }
-
-    const savedRecord = JSON.parse(localStorage.getItem("record") ?? '{"time":0,"score":0}');
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -116,46 +121,40 @@ export default function QuizApp() {
 
     }
 
-    function saveRecord(currentRecord: Record) {
-        // Get saved record
+    useEffect(() => {
+        if (gameState !== "finished") return;
+
+        const currentRecord: Record = {
+            time: totalSeconds,
+            score: stats.score,
+        }
+
         const saved = localStorage.getItem("record");
+        let newBest = currentRecord;
 
-        // if saved is falsy, save the starting record
-        if (!saved) {
-            localStorage.setItem("record", JSON.stringify(currentRecord));
-
-            return currentRecord;
+        if (saved) {
+            const best = JSON.parse(saved) as Record;
+            newBest = {
+                time: best.time === null
+                    ? currentRecord.time
+                    : Math.min(best.time, currentRecord.time),
+                score: Math.max(best.score, currentRecord.score),
+            };
         }
 
-        // if save exists, load as bestRecord
-        const bestRecord = JSON.parse(saved);
-
-        // Compare and update bestRecord
-        const updatedRecord = {
-            time: Math.min(currentRecord.time, bestRecord.time),
-            score: Math.max(currentRecord.score, bestRecord.score),
-        }
-
-        localStorage.setItem("record", JSON.stringify(updatedRecord));
-
-        return updatedRecord;
-    }
+        localStorage.setItem("record", JSON.stringify(newBest));
+        const timeout = setTimeout(() => {
+            setBestRecord(newBest);    
+        })
+        
+        return () => clearTimeout(timeout);
+    }, [gameState, totalSeconds, stats.score]);
 
     useEffect(() => {
         if (gameState === "playing") {
             inputRef.current?.focus();
         }
     }, [gameState]);
-
-    useEffect(() => {
-        if (gameState !== "finished") return;
-
-        saveRecord({
-            time: totalSeconds,
-            score: stats.score,
-        });
-
-    }, [gameState, totalSeconds, stats.score]);
 
     return (
         <>
@@ -182,7 +181,7 @@ export default function QuizApp() {
                 }
 
                 {gameState === "finished" &&
-                    <ResultCard stats={stats} total={total} accuracy={accuracy} time={time} record={savedRecord}/>
+                    <ResultCard stats={stats} total={total} accuracy={accuracy} time={time} record={bestRecord}/>
                 }
             </main>
         </>
