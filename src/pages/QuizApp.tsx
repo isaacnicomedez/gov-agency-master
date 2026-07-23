@@ -39,6 +39,9 @@ export default function QuizApp() {
         finishedAt: 0,
     });
 
+    const total = stats.correct.easy + stats.correct.medium + stats.correct.hard;
+    const accuracy = total / agencies.length * 100;
+
     const inputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
         if (gameState === "playing") {
@@ -125,7 +128,7 @@ export default function QuizApp() {
                 }
 
                 {gameState === "finished" &&
-                    <ResultCard stats={stats}/>
+                    <ResultCard stats={stats} total={total} accuracy={accuracy}/>
                 }
             </main>
         </>
